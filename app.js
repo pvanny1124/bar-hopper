@@ -1,5 +1,6 @@
 var express         = require("express"),
-    mongoose        = require("mongoose");
+    mongoose        = require("mongoose"),
+    Event           = require('./models/event.js');
     
 var app = express();
 var request = require("request");
@@ -11,6 +12,18 @@ mongoose.connect(url);
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+
+// Event.create({
+//     eventName: 'At and t hackathon',
+//     capacity: '100',
+//     city: 'new york city',
+//     state: 'new york',
+//     date: '11/11/2004',
+//     time: '10:50:20',
+//     title: 'big ass hackathon',
+//     address: '601 27st',
+//     type: 'code event'
+// })
 
 var users = [];
 var registeredLocations = [];
