@@ -1,42 +1,91 @@
-var express       = require('express');
-var Twitter       = require('twitter');
-var bodyParser    = require('body-parser');
-
+var express = require("express");
 var app = express();
-app.set("view engine", "ejs");
+var request = require("request");
+var bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
 
-var client = new Twitter({
-  consumer_key: 'nVZgI0PBS3xOIKfuXKqBgKj1q',
-  consumer_secret: 'qLVp6FlDh3cT1euJ7NvNQk5S28B1TdEcCbyzmxaoWNzyhw0H7N',
-  access_token_key: '720751681470885888-KeFeo4l7Bme05ZcZYyAxf6EUI3EUtIB',
-  access_token_secret: 'aUOIgxJvGhCWoQtOfVW0719jb41pNFY3nCEQRBSzucp4S'
+var users = [];
+var registeredLocations = [];
+
+//Testing
+var events = [
+    {
+        name: "Game of Thrones",
+        location: "New York",
+        rating: 4.8,
+        venue: "Bob's Bar"
+    },
+    {
+        name: "Money Ball",
+        location: "New York",
+        ratin: 3.6,
+        venue: "Joe's Joint"
+    },
+    {
+        name: "Basketball game",
+        location: "New York",
+        rating: 4.3,
+        Venue: "Laura's Lounge"
+    }
+    ];
+var results = [];
+
+
+//ROUTES
+app.get("/", function(req, res){
+    res.render("home");
 });
 
-var tw = [];
-
-client.get('search/tweets', {q: '#gameofthrones'}, function(error, tweets, response) {
-    tweets.statuses.forEach(function(tweet) {
-        console.log(tweet[0])
-    });
- });
- 
- 
-
-app.get('/', function(req, res){
-    res.render('index');
+app.get('/aboutUs', function(req, res){
+    //logic for about us page    
 });
 
-app.post('/', function(req, res){
-  var state = req.body.state;
-  var movies = req.body.movies;
-  res.render('results', {state: state, movies: movies});
-})
+app.get('/events')
 
-app.listen(process.env.PORT, process.env.IP, function(){
-    console.log('THE SERVER IS RUNNING');
-})
+app.post("/search", function(req, res){
+    // app.get("/search", function(req, res){
+    var mySearch = req.body.mySearch;
+    // var mySearch = "game";
+    var nearMe = req.body.nearMe;
+    var byName = req.body.byName;
+    var byLocation = req.body.byLocation;
+    
+    // if(nearMe) {
+        mySearch = mySearch.toLowerCase();
+        events.forEach(function(event){
+            var eventName = event.name.toLowerCase();
+            var newWord = "";
+            
+            //Parse event name into a string
+            for(var i=0; i < eventName.length; i++) {
+                if(eventName[i] !== " ") {
+                    newWord += eventName[i];
+                    console.log(newWord);
+                    
+                    //Check if the search query is the same as an event
+                    if(newWord === mySearch) {
+                        results.push(event);
+                        newWord = "";
+                    }
+                } else {
+                    newWord = "";
+                }
+            }
+            newWord == "";
+        });
+    // }
+    res.send(results);
+});
+
+app.get('/createForm', function(req, res){
+    const states = ['New York', 'Chicago', 'Los Angeles'];
+    
+    res.render('createForm', {states: states});
+});
 
 
-
+app.listen(process.env.PORT, process.env.IP, function() {
+    console.log("Bar Hopper App has started!");
+});

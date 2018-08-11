@@ -1,0 +1,36 @@
+<% include ./partials/header %>
+
+<main class="container" style="margin: 50px auto">
+<div class="content">
+<div class="jumbotron">
+  <h1 class="display-4">Hello, Joe Schmo</h1>
+  <p class="lead">Welcome to Bar Hopper. To start an event at your location, click the button below. <br>
+  If you would like to learn about events going on in your area, use the search bar below. <br>
+  Get to hoppin!</p>
+  <hr class="my-4">
+  <a class="btn btn-primary btn-lg" href="createForm" role="button">Start an event!</a>
+</div>
+</div>
+
+<h2>Find an event:</h2>
+<form action="/search" method="POST">
+    <div class="form-group" style="width: 70%;">
+        <input type="text" class="form-control" name="mySearch" placeholder="Search here...">
+    </div>
+    <div class="form-group">
+        <input type="checkbox" name="nearMe" checked> Show only locations near me!
+    </div>
+    <div class="form-group dropdown">
+        <select>
+                <option class="dropdown-item" value="byName">Search by event name</option>
+                <option class="dropdown-item" value="byLocation">Search by event locale</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input class="btn btn-primary btn-lg" type="submit">
+    </div>
+</form>
+
+</main>
+
+<% include partials/footer %>
