@@ -1,7 +1,13 @@
-var express = require("express");
+var express         = require("express"),
+    mongoose        = require("mongoose");
+    
 var app = express();
 var request = require("request");
 var bodyParser = require("body-parser");
+
+var url = "mongodb://localhost/barhopper";
+mongoose.connect(url);
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
